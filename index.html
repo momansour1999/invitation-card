@@ -14,7 +14,8 @@
         }
         html,
         body {
-            min-height: 100vh;
+            min-height: 100dvh;
+            min-height: calc(var(--vh, 1vh) * 100);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -723,14 +724,16 @@
             html, body {
                 padding: 5px;
                 align-items: center;
-                min-height: 100vh;
+                min-height: 100dvh;
+            min-height: calc(var(--vh, 1vh) * 100);
                 height: 100%;
             }
             .scene {
                 width: 100%;
                 max-width: 100%;
                 padding: 5px 0;
-                min-height: 100vh;
+                min-height: 100dvh;
+            min-height: calc(var(--vh, 1vh) * 100);
                 height: 100%;
             }
             
@@ -738,7 +741,8 @@
             .sp, .card {
                 width: 100%;
                 max-width: 100%;
-                min-height: 92vh;
+                min-height: 92dvh;
+                min-height: calc(var(--vh, 1vh) * 92);
                 height: auto;
                 border-radius: 10px;
                 top: 0;
@@ -751,13 +755,15 @@
                 left: 0;
                 padding: 15px;
                 gap: 10px;
-                min-height: 92vh;
+                min-height: 92dvh;
+                min-height: calc(var(--vh, 1vh) * 92);
                 height: auto;
             }
             
             /* Make sure the card fills the viewport */
             .card {
-                min-height: 92vh;
+                min-height: 92dvh;
+                min-height: calc(var(--vh, 1vh) * 92);
                 height: auto;
                 border-radius: 10px;
             }
@@ -767,7 +773,8 @@
                 background-size: cover !important;
                 background-position: center !important;
                 background-repeat: no-repeat;
-                min-height: 92vh;
+                min-height: 92dvh;
+                min-height: calc(var(--vh, 1vh) * 92);
             }
             
             /* Adjust text sizes for mobile */
@@ -1219,5 +1226,16 @@
 
         console.log('✨ Enhancements loaded: falling petals, sparkles, light rays, orbs ✨');
     </script>
+
+<script>
+function setViewportHeight(){
+ document.documentElement.style.setProperty('--vh',(window.innerHeight*0.01)+'px');
+}
+setViewportHeight();
+window.addEventListener('resize',setViewportHeight);
+window.addEventListener('orientationchange',()=>setTimeout(setViewportHeight,300));
+window.addEventListener('load',()=>requestAnimationFrame(setViewportHeight));
+</script>
+
 </body>
 </html>
