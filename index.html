@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>surprise !</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+    <style>
+        /* ── EXISTING STYLES (unchanged) ── */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        html,
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #f0e6d0 0%, #e4d4b5 100%);
+        }
+        .scene {
+            position: relative;
+            width: 430px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px 0 40px;
+        }
+
+        /* ══ SURPRISE COVER ══ */
+        .sp {
+            position: absolute;
+            top: 20px;
+            width: 430px;
+            min-height: 680px;
+            background: #fdfaf5;
+            border-radius: 14px;
+            border: 1px solid #ddd0b0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 18px;
+            z-index: 20;
+            cursor: pointer;
+            overflow: hidden;
+            transform-origin: left center;
+            transition: transform 1.3s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.9s ease;
+            box-shadow: 0 24px 70px rgba(160, 120, 60, 0.2);
+        }
+        .sp.away {
+            transform: perspective(1400px) rotateY(-128deg) scale(0.95);
+            opacity: 0;
+            pointer-events: none;
+        }
+        .sp-ib {
+            position: absolute;
+            inset: 14px;
+            border: 1px solid #c9a96e33;
+            border-radius: 8px;
+            pointer-events: none;
+        }
+        .sp-c {
+            position: absolute;
+            width: 32px;
+            height: 32px;
+            border-color: #c9a96e;
+            border-style: solid;
+        }
+        .sp-c.tl {
+            top: 10px;
+            left: 10px;
+            border-width: 2px 0 0 2px;
+            border-radius: 3px 0 0 0;
+        }
+        .sp-c.tr {
+            top: 10px;
+            right: 10px;
+            border-width: 2px 2px 0 0;
+            border-radius: 0 3px 0 0;
+        }
+        .sp-c.bl {
+            bottom: 10px;
+            left: 10px;
+            border-width: 0 0 2px 2px;
+            border-radius: 0 0 0 3px;
+        }
+        .sp-c.br {
+            bottom: 10px;
+            right: 10px;
+            border-width: 0 2px 2px 0;
+            border-radius: 0 0 3px 0;
+        }
+        .sp-c::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(45deg, #c9a96e55, transparent);
+            animation: cornerGlow 3s ease-in-out infinite alternate;
+        }
+        @keyframes cornerGlow {
+            0% {
+                opacity: 0.2
+            }
+            100% {
+                opacity: 1
+            }
+        }
+        .sp-rings {
+            position: relative;
+            width: 80px;
+            height: 80px;
+            flex-shrink: 0;
+        }
+        .sp-ring {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 2.5px solid #c9a96e;
+            top: 14px;
+            animation: ringPulse 3.5s ease-in-out infinite;
+        }
+        .sp-ring.r1 {
+            left: 2px;
+            animation-delay: 0s;
+        }
+        .sp-ring.r2 {
+            left: 26px;
+            animation-delay: 0.8s;
+        }
+        @keyframes ringPulse {
+            0%,
+            100% {
+                box-shadow: 0 0 0 0 rgba(201, 169, 110, 0.45);
+            }
+            50% {
+                box-shadow: 0 0 0 14px rgba(201, 169, 110, 0);
+            }
+        }
+        .sp-ring::after {
+            content: '';
+            position: absolute;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #fff9e8 0%, #e8c97a 100%);
+            top: 7px;
+            left: 9px;
+            animation: gemShine 3s ease-in-out infinite;
+        }
+        @keyframes gemShine {
+            0%,
+            100% {
+                opacity: .4;
+                transform: scale(1)
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.4)
+            }
+        }
+        .sp-orn {
+            color: #c9a96e;
+            font-size: 20px;
+            letter-spacing: 14px;
+            animation: spPulse 3s ease-in-out infinite;
+        }
+        @keyframes spPulse {
+            0%,
+            100% {
+                opacity: .4;
+                transform: scale(1)
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.08)
+            }
+        }
+        .sp-big {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 60px;
+            color: #2e1804;
+            animation: spBreathe 4.5s ease-in-out infinite;
+            line-height: 1;
+        }
+        @keyframes spBreathe {
+            0%,
+            100% {
+                transform: scale(1)
+            }
+            50% {
+                transform: scale(1.045)
+            }
+        }
+        .sp-sub {
+            font-family: 'Playfair Display', serif;
+            font-size: 13px;
+            color: #8a6a3a;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            direction: ltr;
+        }
+        .sp-tap {
+            font-family: 'Playfair Display', serif;
+            font-size: 12px;
+            color: #c9a96e;
+            letter-spacing: 3px;
+            direction: ltr;
+            margin-top: 4px;
+            animation: spBlink 2.2s ease-in-out infinite;
+        }
+        @keyframes spBlink {
+            0%,
+            100% {
+                opacity: .2
+            }
+            50% {
+                opacity: 1
+            }
+        }
+        .sp-petal {
+            position: absolute;
+            pointer-events: none;
+            animation: spFloat linear infinite;
+            opacity: 0;
+        }
+        @keyframes spFloat {
+            0% {
+                transform: translateY(110%) rotate(0deg);
+                opacity: 0;
+            }
+            8% {
+                opacity: 0.7;
+            }
+            88% {
+                opacity: 0.35;
+            }
+            100% {
+                transform: translateY(-115%) rotate(400deg);
+                opacity: 0;
+            }
+        }
+
+        /* ══ CARD ══ */
+        .card {
+            width: 430px;
+            min-height: 680px;
+            border-radius: 14px;
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            transform: scale(0.93) translateY(20px);
+            transition: opacity 1.6s ease, transform 1.6s cubic-bezier(.22, 1, .36, 1);
+            box-shadow: 0 32px 80px rgba(100, 70, 30, 0.25), 0 8px 24px rgba(100, 70, 30, 0.12);
+        }
+        .card.show {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+        }
+
+        /* The image — sole source of all text and design */
+        .card-img {
+            position: absolute;
+            inset: 0;
+            background-size: cover;
+            background-position: center top;
+            z-index: 1;
+            animation: imgBreath 5s ease-in-out infinite alternate;
+        }
+        @keyframes imgBreath {
+            0% {
+                transform: scale(1) translateY(0);
+            }
+            40% {
+                transform: scale(1.013) translateY(-5px);
+            }
+            100% {
+                transform: scale(1.025) translateY(-10px);
+            }
+        }
+
+        /*
+            MASK STRIPS — 5 beige panels stacked over the image.
+            Each one covers a content band. They fade out one by one,
+            "wiping" the image text into view from top to bottom.
+            NO HTML TEXT EXISTS ON THE CARD AT ALL.
+          */
+        .ms {
+            position: absolute;
+            left: 0;
+            right: 0;
+            z-index: 2;
+            background: linear-gradient(to bottom,
+                    #ede0c8 0%,
+                    #e8d9bf 40%,
+                    #e2d1b4 100%);
+            transition: opacity 4s ease, transform 2s cubic-bezier(.22, 1, .36, 1);
+        }
+        .ms.gone {
+            opacity: 0;
+            transform: translateY(-14px);
+            pointer-events: none;
+        }
+
+        /* vignette */
+        .card-vignette {
+            position: absolute;
+            inset: 0;
+            z-index: 3;
+            pointer-events: none;
+            background:
+                radial-gradient(ellipse 80% 60% at 50% 50%, transparent 52%, rgba(140, 90, 30, 0.06) 100%),
+                linear-gradient(to bottom, transparent 80%, rgba(140, 90, 30, 0.06) 100%);
+        }
+        /* shimmer */
+        .card-shimmer {
+            position: absolute;
+            top: -100%;
+            left: -90%;
+            width: 48%;
+            height: 300%;
+            background: linear-gradient(108deg,
+                    transparent 35%, rgba(255, 235, 150, .10) 47%,
+                    rgba(255, 248, 190, .18) 50%, rgba(255, 235, 150, .10) 53%, transparent 65%);
+            z-index: 4;
+            pointer-events: none;
+            animation: sweep 12s cubic-bezier(.4, 0, .6, 1) infinite;
+        }
+        @keyframes sweep {
+            0% {
+                left: -90%
+            }
+            100% {
+                left: 130%
+            }
+        }
+        /* glow border */
+        .card-glow {
+            position: absolute;
+            inset: 0;
+            z-index: 5;
+            pointer-events: none;
+            border-radius: 14px;
+            animation: glowPulse 7s ease-in-out infinite;
+        }
+        @keyframes glowPulse {
+            0%,
+            100% {
+                box-shadow: inset 0 0 0 1.5px rgba(201, 169, 110, 0.2);
+            }
+            50% {
+                box-shadow: inset 0 0 0 1.5px rgba(201, 169, 110, 0.65), 0 0 22px 6px rgba(201, 169, 110, 0.10);
+            }
+        }
+        .spark-layer {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 6;
+        }
+        .pts {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 7;
+        }
+
+        /* audio is hidden, plays in background */
+        #bgAudio {
+            display: none;
+        }
+
+        /* small audio status badge – subtle and elegant */
+        .audio-badge {
+            position: fixed;
+            bottom: 18px;
+            right: 18px;
+            z-index: 999;
+            font-family: 'Playfair Display', serif;
+            font-size: 11px;
+            color: #c9a96e;
+            background: rgba(253, 250, 245, 0.75);
+            backdrop-filter: blur(6px);
+            padding: 6px 14px 6px 18px;
+            border-radius: 40px;
+            border: 1px solid rgba(201, 169, 110, 0.3);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+            letter-spacing: 2px;
+            opacity: 0;
+            transition: opacity 1.2s ease 3s;
+            pointer-events: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .audio-badge.show {
+            opacity: 1;
+        }
+        .audio-badge .dot {
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #c9a96e;
+            animation: dotPulse 2s ease-in-out infinite;
+        }
+        @keyframes dotPulse {
+            0%,
+            100% {
+                opacity: 0.25;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.3);
+            }
+        }
+
+        /* ═══════════════════════════════════════════════════════════
+               ✦  ENHANCEMENTS — NEW STYLES (added below)  ✦
+               ═══════════════════════════════════════════════════════════ */
+
+        /* ── Petal Container ── */
+        .petal-world {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 8;
+            overflow: hidden;
+            border-radius: 14px;
+        }
+        .petal-world .petal {
+            position: absolute;
+            top: -40px;
+            border-radius: 50% 0 50% 50%;
+            opacity: 0;
+            will-change: transform, opacity;
+            animation: petalFall linear infinite;
+            transform-origin: center;
+            box-shadow: 0 0 12px rgba(255, 200, 180, 0.15);
+        }
+        .petal-world .petal::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            background: inherit;
+            filter: blur(1px);
+            opacity: 0.5;
+        }
+        @keyframes petalFall {
+            0% {
+                transform: translateY(0) rotate(0deg) scale(0.6);
+                opacity: 0;
+            }
+            6% {
+                opacity: 0.85;
+            }
+            90% {
+                opacity: 0.7;
+            }
+            100% {
+                transform: translateY(calc(100vh + 100px)) rotate(720deg) scale(1);
+                opacity: 0;
+            }
+        }
+
+        /* ── Floating Sparkles ── */
+        .sparkle-field {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 9;
+            overflow: hidden;
+            border-radius: 14px;
+        }
+        .sparkle-field .sparkle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #fffbe6 0%, #f5d98e 100%);
+            box-shadow: 0 0 6px 2px rgba(245, 217, 142, 0.5);
+            opacity: 0;
+            animation: sparkleTwinkle ease-in-out infinite alternate;
+            will-change: transform, opacity;
+        }
+        @keyframes sparkleTwinkle {
+            0% {
+                opacity: 0;
+                transform: scale(0.2) rotate(0deg);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.6) rotate(180deg);
+            }
+            100% {
+                opacity: 0.2;
+                transform: scale(0.5) rotate(360deg);
+            }
+        }
+
+        /* ── Light Reflections ── */
+        .light-ray {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 10;
+            overflow: hidden;
+            border-radius: 14px;
+            opacity: 0;
+            transition: opacity 2.5s ease 0.8s;
+        }
+        .light-ray.active {
+            opacity: 1;
+        }
+        .light-ray .beam {
+            position: absolute;
+            top: -30%;
+            left: -20%;
+            width: 60%;
+            height: 160%;
+            background: linear-gradient(135deg,
+                    transparent 25%,
+                    rgba(255, 245, 200, 0.10) 40%,
+                    rgba(255, 248, 210, 0.22) 48%,
+                    rgba(255, 250, 220, 0.30) 50%,
+                    rgba(255, 248, 210, 0.22) 52%,
+                    rgba(255, 245, 200, 0.10) 60%,
+                    transparent 75%);
+            transform: rotate(-18deg);
+            animation: beamSweep 9s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+            filter: blur(3px);
+        }
+        .light-ray .beam:nth-child(2) {
+            top: 10%;
+            left: -40%;
+            width: 80%;
+            height: 120%;
+            background: linear-gradient(145deg,
+                    transparent 30%,
+                    rgba(255, 235, 170, 0.06) 45%,
+                    rgba(255, 240, 190, 0.14) 50%,
+                    rgba(255, 235, 170, 0.06) 55%,
+                    transparent 70%);
+            transform: rotate(8deg);
+            animation-duration: 13s;
+            animation-delay: -2s;
+            filter: blur(5px);
+        }
+        .light-ray .beam:nth-child(3) {
+            top: -10%;
+            left: 10%;
+            width: 40%;
+            height: 140%;
+            background: linear-gradient(110deg,
+                    transparent 20%,
+                    rgba(255, 240, 180, 0.05) 38%,
+                    rgba(255, 245, 200, 0.12) 44%,
+                    rgba(255, 248, 210, 0.08) 50%,
+                    transparent 65%);
+            transform: rotate(-32deg);
+            animation-duration: 11s;
+            animation-delay: -5s;
+            filter: blur(6px);
+        }
+        @keyframes beamSweep {
+            0% {
+                transform: rotate(-18deg) translateX(-20%);
+                opacity: 0.2;
+            }
+            30% {
+                opacity: 1;
+            }
+            70% {
+                opacity: 1;
+            }
+            100% {
+                transform: rotate(-18deg) translateX(80%);
+                opacity: 0.2;
+            }
+        }
+
+        /* ── Glowing Orbs (floating light bubbles) ── */
+        .orb-field {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 11;
+            overflow: hidden;
+            border-radius: 14px;
+            opacity: 0;
+            transition: opacity 2.5s ease 1.2s;
+        }
+        .orb-field.active {
+            opacity: 1;
+        }
+        .orb-field .orb {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, rgba(255, 240, 180, 0.25), rgba(255, 215, 140, 0.05) 70%, transparent);
+            filter: blur(8px);
+            animation: orbFloat ease-in-out infinite alternate;
+            will-change: transform, opacity;
+        }
+        @keyframes orbFloat {
+            0% {
+                transform: translate(0, 0) scale(0.8);
+                opacity: 0.15;
+            }
+            100% {
+                transform: translate(var(--tx, 30px), var(--ty, -30px)) scale(1.2);
+                opacity: 0.45;
+            }
+        }
+
+        /* ── Petals that appear after cover opens ── */
+        .petal-world.reveal .petal {
+            animation-play-state: running;
+        }
+        .petal-world .petal {
+            animation-play-state: paused;
+        }
+        .petal-world.reveal .petal {
+            animation-play-state: running;
+        }
+
+        /* ── Cover petal burst on open ── */
+        .sp .sp-petal-burst {
+            position: absolute;
+            pointer-events: none;
+            border-radius: 50% 0 50% 50%;
+            opacity: 0;
+            animation: burstOut 1.4s cubic-bezier(0.22, 0.68, 0.35, 1) forwards;
+            z-index: 30;
+        }
+        @keyframes burstOut {
+            0% {
+                opacity: 0;
+                transform: translate(0, 0) scale(0.2) rotate(0deg);
+            }
+            15% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+                transform: translate(var(--bx), var(--by)) scale(1.6) rotate(720deg);
+            }
+        }
+
+        /* responsive tweaks */
+        @media (max-width: 460px) {
+            .scene {
+                width: 100%;
+                padding: 10px 10px 30px;
+            }
+            .sp,
+            .card {
+                width: 100%;
+                min-height: 560px;
+            }
+            .sp-big {
+                font-size: 40px;
+            }
+            .sp-rings {
+                width: 60px;
+                height: 60px;
+            }
+            .sp-ring {
+                width: 38px;
+                height: 38px;
+                top: 10px;
+            }
+            .sp-ring.r1 {
+                left: 0;
+            }
+            .sp-ring.r2 {
+                left: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- hidden background audio -->
+    <audio id="bgAudio" preload="auto" playsinline loop><source src="audio.mp3" type="audio/mpeg"></audio>
+
+    <div class="scene">
+
+        <!-- COVER -->
+        <div class="sp" id="sp">
+            <div class="sp-ib"></div>
+            <div class="sp-c tl"></div>
+            <div class="sp-c tr"></div>
+            <div class="sp-c bl"></div>
+            <div class="sp-c br"></div>
+            <svg width="200" height="18" viewBox="0 0 200 18" style="opacity:.7">
+                <line x1="0" y1="9" x2="68" y2="9" stroke="#c9a96e" stroke-width=".8"/>
+                <path d="M76,9 Q85,3 94,9 Q85,15 76,9Z" fill="#c9a96e" opacity=".7"/>
+                <circle cx="100" cy="9" r="2.5" fill="#c9a96e"/>
+                <path d="M106,9 Q115,3 124,9 Q115,15 106,9Z" fill="#c9a96e" opacity=".7"/>
+                <line x1="132" y1="9" x2="200" y2="9" stroke="#c9a96e" stroke-width=".8"/>
+            </svg>
+            <div class="sp-rings">
+                <div class="sp-ring r1"></div>
+                <div class="sp-ring r2"></div>
+            </div>
+            <div class="sp-orn">✦ ✦ ✦</div>
+            <div class="sp-big">Surprise!</div>
+            <div class="sp-sub">You're Invited</div>
+            <svg width="200" height="18" viewBox="0 0 200 18" style="opacity:.7">
+                <line x1="0" y1="9" x2="68" y2="9" stroke="#c9a96e" stroke-width=".8"/>
+                <path d="M76,9 Q85,3 94,9 Q85,15 76,9Z" fill="#c9a96e" opacity=".7"/>
+                <circle cx="100" cy="9" r="2.5" fill="#c9a96e"/>
+                <path d="M106,9 Q115,3 124,9 Q115,15 106,9Z" fill="#c9a96e" opacity=".7"/>
+                <line x1="132" y1="9" x2="200" y2="9" stroke="#c9a96e" stroke-width=".8"/>
+            </svg>
+            <div class="sp-tap">✦ tap to open ✦</div>
+
+            <!-- ── ENHANCEMENT: burst petals on cover ── -->
+            <div id="burstContainer" style="position:absolute;inset:0;pointer-events:none;z-index:30;overflow:hidden;border-radius:14px;"></div>
+        </div>
+
+        <!-- CARD — image only, no text HTML whatsoever -->
+        <div class="card" id="card">
+
+            <div class="card-img" id="cardImg"></div>
+
+            <!-- Mask strips -->
+            <div class="ms" id="s1" style="top:0;    height:22%;"></div>
+            <div class="ms" id="s2" style="top:22%;  height:20%;"></div>
+            <div class="ms" id="s3" style="top:42%;  height:23%;"></div>
+            <div class="ms" id="s4" style="top:65%;  height:15%;"></div>
+            <div class="ms" id="s5" style="top:80%;  height:20%;"></div>
+
+            <div class="card-vignette"></div>
+            <div class="card-shimmer"></div>
+            <div class="card-glow"></div>
+            <div class="spark-layer" id="sparkLayer"></div>
+            <div class="pts" id="pts"></div>
+
+            <!-- ══════════════════════════════════════════════ -->
+            <!-- ✦  ENHANCEMENTS — NEW LAYERS (added below)  ✦ -->
+            <!-- ══════════════════════════════════════════════ -->
+
+            <!-- ── Falling Petals ── -->
+            <div class="petal-world" id="petalWorld"></div>
+
+            <!-- ── Sparkle Field ── -->
+            <div class="sparkle-field" id="sparkleField"></div>
+
+            <!-- ── Light Rays ── -->
+            <div class="light-ray" id="lightRay">
+                <div class="beam"></div>
+                <div class="beam"></div>
+                <div class="beam"></div>
+            </div>
+
+            <!-- ── Floating Orbs ── -->
+            <div class="orb-field" id="orbField"></div>
+
+        </div>
+
+    </div>
+
+    <!-- subtle audio status badge -->
+    <div class="audio-badge" id="audioBadge">
+        <span class="dot"></span>
+        <span>♬</span>
+    </div>
+
+    <script>
+        // ── EXISTING SCRIPT (unchanged) ──
+        const B64 = "invitation.jpeg";
+
+        document.getElementById('cardImg').style.backgroundImage = `url(${B64})`;
+
+        const cover = document.getElementById('sp');
+        const card = document.getElementById('card');
+        const audio = document.getElementById('bgAudio');
+        const audioBadge = document.getElementById('audioBadge');
+        const strips = [
+            document.getElementById('s1'),
+            document.getElementById('s2'),
+            document.getElementById('s3'),
+            document.getElementById('s4'),
+            document.getElementById('s5')
+        ];
+
+        cover.addEventListener('click', () => {
+            cover.classList.add('away');
+            card.classList.add('show');
+            audio.play().catch(err => {
+                console.log("Audio playback delayed or blocked by browser policy:", err);
+            });
+            audioBadge.classList.add('show');
+            strips.forEach((strip, index) => {
+                setTimeout(() => {
+                    strip.classList.add('gone');
+                }, 1200 + (index * 700));
+            });
+
+            // ── ENHANCEMENT: trigger extra animations on open ──
+            triggerEnhancements();
+        });
+
+        // ═══════════════════════════════════════════════════════════
+        // ✦  ENHANCEMENTS — NEW JAVASCRIPT (added below)  ✦
+        // ═══════════════════════════════════════════════════════════
+
+        // ── Petal burst on cover click ──
+        function burstPetals() {
+            const container = document.getElementById('burstContainer');
+            if (!container) return;
+            const colors = ['#f7d4cd', '#fce4d6', '#fce8d0', '#f5dbd0', '#fae1d4', '#f2d5c5', '#f0d0c0'];
+            for (let i = 0; i < 28; i++) {
+                const p = document.createElement('div');
+                p.className = 'sp-petal-burst';
+                const size = 14 + Math.random() * 24;
+                const angle = Math.random() * 2 * Math.PI;
+                const dist = 80 + Math.random() * 180;
+                const tx = Math.cos(angle) * dist;
+                const ty = Math.sin(angle) * dist - 40;
+                p.style.width = size + 'px';
+                p.style.height = (size * 0.7) + 'px';
+                p.style.background = colors[Math.floor(Math.random() * colors.length)];
+                p.style.setProperty('--bx', tx + 'px');
+                p.style.setProperty('--by', ty + 'px');
+                p.style.left = (50 + Math.random() * 20 - 10) + '%';
+                p.style.top = (40 + Math.random() * 30) + '%';
+                p.style.animationDuration = (0.9 + Math.random() * 0.7) + 's';
+                p.style.animationDelay = (Math.random() * 0.25) + 's';
+                p.style.transform = 'rotate(' + (Math.random() * 360) + 'deg)';
+                p.style.borderRadius = (50 + Math.random() * 30) + '% 0 ' + (50 + Math.random() * 30) + '% ' + (50 + Math
+                .random() * 30) + '%';
+                container.appendChild(p);
+                setTimeout(() => { p.remove(); }, 2200);
+            }
+        }
+
+        // ── Generate falling petals ──
+        function createPetals() {
+            const container = document.getElementById('petalWorld');
+            if (!container) return;
+            const colors = [
+                '#f7d4cd', '#fce4d6', '#fce8d0', '#f5dbd0',
+                '#fae1d4', '#f2d5c5', '#f0d0c0', '#f8ddd0',
+                '#f5d5c8', '#fae8dc', '#f7dfd4', '#f0d5c8'
+            ];
+            const count = 45;
+            for (let i = 0; i < count; i++) {
+                const p = document.createElement('div');
+                p.className = 'petal';
+                const size = 10 + Math.random() * 22;
+                const isWide = Math.random() > 0.5;
+                p.style.width = size + 'px';
+                p.style.height = (size * (isWide ? 0.55 : 0.7)) + 'px';
+                p.style.background = colors[Math.floor(Math.random() * colors.length)];
+                p.style.left = (Math.random() * 100) + '%';
+                p.style.animationDuration = (8 + Math.random() * 12) + 's';
+                p.style.animationDelay = (Math.random() * 15) + 's';
+                p.style.borderRadius = (50 + Math.random() * 30) + '% 0 ' + (50 + Math.random() * 30) + '% ' + (50 + Math
+                .random() * 30) + '%';
+                p.style.transform = 'rotate(' + (Math.random() * 360) + 'deg)';
+                p.style.opacity = '0';
+                container.appendChild(p);
+            }
+            // reveal after a moment
+            setTimeout(() => {
+                container.classList.add('reveal');
+            }, 300);
+        }
+
+        // ── Generate sparkles ──
+        function createSparkles() {
+            const container = document.getElementById('sparkleField');
+            if (!container) return;
+            const count = 40;
+            for (let i = 0; i < count; i++) {
+                const s = document.createElement('div');
+                s.className = 'sparkle';
+                const size = 2 + Math.random() * 5;
+                s.style.width = size + 'px';
+                s.style.height = size + 'px';
+                s.style.left = (Math.random() * 100) + '%';
+                s.style.top = (Math.random() * 100) + '%';
+                s.style.animationDuration = (2 + Math.random() * 4) + 's';
+                s.style.animationDelay = (Math.random() * 5) + 's';
+                s.style.boxShadow = '0 0 ' + (4 + Math.random() * 8) + 'px ' + (1 + Math.random() * 3) + 'px rgba(245,217,142,0.' +
+                    (3 + Math.random() * 4) + ')';
+                container.appendChild(s);
+            }
+        }
+
+        // ── Generate floating orbs ──
+        function createOrbs() {
+            const container = document.getElementById('orbField');
+            if (!container) return;
+            const count = 8;
+            for (let i = 0; i < count; i++) {
+                const o = document.createElement('div');
+                o.className = 'orb';
+                const size = 40 + Math.random() * 90;
+                o.style.width = size + 'px';
+                o.style.height = size + 'px';
+                o.style.left = (Math.random() * 100) + '%';
+                o.style.top = (Math.random() * 100) + '%';
+                o.style.setProperty('--tx', (20 + Math.random() * 60) + 'px');
+                o.style.setProperty('--ty', (20 + Math.random() * 60 - 30) + 'px');
+                o.style.animationDuration = (6 + Math.random() * 8) + 's';
+                o.style.animationDelay = (Math.random() * 5) + 's';
+                o.style.background = 'radial-gradient(circle at 30% 30%, rgba(255,240,180,0.' + (15 + Math.random() * 20) +
+                    '), rgba(255,215,140,0.03) 70%, transparent)';
+                container.appendChild(o);
+            }
+        }
+
+        // ── Trigger all enhancements when cover opens ──
+        function triggerEnhancements() {
+            // Burst petals from cover
+            burstPetals();
+
+            // Activate light rays
+            const ray = document.getElementById('lightRay');
+            if (ray) setTimeout(() => { ray.classList.add('active'); }, 400);
+
+            // Activate orbs
+            const orbs = document.getElementById('orbField');
+            if (orbs) setTimeout(() => { orbs.classList.add('active'); }, 700);
+
+            // Ensure petals are running
+            const pw = document.getElementById('petalWorld');
+            if (pw) setTimeout(() => { pw.classList.add('reveal'); }, 200);
+        }
+
+        // ── Init enhancements on page load ──
+        window.addEventListener('DOMContentLoaded', () => {
+            createPetals();
+            createSparkles();
+            createOrbs();
+
+            // Pre-warm: light ray and orbs start hidden, will be revealed on open
+            // But we want petals to be ready — they start paused, will play on open
+            // However we want petals to already be falling behind the cover
+            // So we reveal them immediately but they're behind the cover
+            const pw = document.getElementById('petalWorld');
+            if (pw) {
+                // Start petals immediately so they're already falling when cover opens
+                setTimeout(() => {
+                    pw.classList.add('reveal');
+                }, 100);
+            }
+
+            // Also start sparkles immediately
+            // They're always visible but behind the cover
+        });
+
+        // ── Also trigger burst if cover is clicked via the existing listener ──
+        // We already added burstPetals() inside the click handler above.
+        // The triggerEnhancements() function is called from the click handler.
+
+        console.log('✨ Enhancements loaded: falling petals, sparkles, light rays, orbs ✨');
+    </script>
+</body>
+</html>
