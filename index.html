@@ -661,7 +661,7 @@
         }
 
         /* ═══════════════════════════════════════════════════════════
-               ✦  IMPROVED RESPONSIVE SCALING  ✦
+               ✦  FIXED RESPONSIVE SCALING  ✦
                ═══════════════════════════════════════════════════════════ */
 
         /* Large screens (desktop) */
@@ -718,33 +718,59 @@
             }
         }
 
-        /* Mobile phones */
+        /* Mobile phones - PORTRAIT & LANDSCAPE FIX */
         @media (max-width: 480px) {
             html, body {
                 padding: 5px;
-                align-items: flex-start;
+                align-items: center;
                 min-height: 100vh;
+                height: 100%;
             }
             .scene {
                 width: 100%;
                 max-width: 100%;
-                padding: 10px 0 20px;
+                padding: 5px 0;
                 min-height: 100vh;
+                height: 100%;
             }
+            
+            /* CRITICAL FIX: Use vh for height on mobile */
             .sp, .card {
                 width: 100%;
                 max-width: 100%;
-                min-height: 90vh;
+                min-height: 92vh;
+                height: auto;
                 border-radius: 10px;
                 top: 0;
+                position: relative;
             }
+            
             .sp {
                 position: absolute;
                 top: 0;
+                left: 0;
                 padding: 15px;
-                gap: 12px;
-                min-height: 90vh;
+                gap: 10px;
+                min-height: 92vh;
+                height: auto;
             }
+            
+            /* Make sure the card fills the viewport */
+            .card {
+                min-height: 92vh;
+                height: auto;
+                border-radius: 10px;
+            }
+            
+            /* Image should cover the card properly */
+            .card-img {
+                background-size: cover !important;
+                background-position: center !important;
+                background-repeat: no-repeat;
+                min-height: 92vh;
+            }
+            
+            /* Adjust text sizes for mobile */
             .sp-big {
                 font-size: 38px !important;
             }
@@ -793,18 +819,7 @@
                 inset: 8px;
             }
 
-            /* Card adjustments */
-            .card {
-                min-height: 90vh;
-                border-radius: 10px;
-            }
-            .card-img {
-                background-size: contain !important;
-                background-position: center !important;
-                background-repeat: no-repeat;
-            }
-            
-            /* Mask strips - adjust heights for mobile */
+            /* Mask strips - dynamic heights for mobile */
             #s1 { height: 20%; }
             #s2 { height: 22%; }
             #s3 { height: 24%; }
@@ -857,24 +872,68 @@
                 letter-spacing: 2px;
             }
             .sp, .card {
-                min-height: 85vh;
+                min-height: 88vh;
+            }
+            .card-img {
+                min-height: 88vh;
             }
         }
 
-        /* Landscape mode on phones */
+        /* Landscape mode on phones - FIXED */
         @media (max-height: 500px) and (orientation: landscape) {
+            .sp, .card {
+                min-height: 85vh;
+                height: auto;
+            }
+            .sp {
+                min-height: 85vh;
+                gap: 6px;
+                padding: 10px;
+            }
+            .card-img {
+                min-height: 85vh;
+            }
+            .sp-big {
+                font-size: 28px !important;
+            }
+            .sp-rings {
+                transform: scale(0.5);
+            }
+            .sp-orn {
+                font-size: 14px;
+                letter-spacing: 6px;
+            }
+            .sp-sub {
+                font-size: 10px;
+                letter-spacing: 2px;
+            }
+            .sp-tap {
+                font-size: 9px;
+            }
+            /* Reduce gap in landscape */
+            .sp {
+                gap: 6px;
+            }
+        }
+
+        /* Extra small landscape */
+        @media (max-height: 400px) and (orientation: landscape) {
             .sp, .card {
                 min-height: 80vh;
             }
+            .sp {
+                min-height: 80vh;
+                gap: 4px;
+                padding: 8px;
+            }
+            .card-img {
+                min-height: 80vh;
+            }
             .sp-big {
-                font-size: 32px !important;
+                font-size: 24px !important;
             }
             .sp-rings {
-                transform: scale(0.6);
-            }
-            .sp {
-                gap: 8px;
-                padding: 10px;
+                transform: scale(0.4);
             }
         }
     </style>
